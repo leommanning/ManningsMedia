@@ -20,9 +20,9 @@
             --border-fine: rgba(255, 255, 255, 0.04);
             --fluid-padding: clamp(2.5rem, 6vw, 8rem);
             
-            /* Sampled Colors from strippedlogo.png */
-            --brand-teal: #39b5ca;       
-            --brand-blue: #16648b;       
+            /* Sampleed Colors from strippedlogo.png */
+            --brand-teal: #39b5ca;       /* Radiant top-left of logo */
+            --brand-blue: #16648b;       /* Deep oceanic bottom-right of logo */
         }
 
         html {
@@ -31,54 +31,11 @@
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
-            /* Hide system cursor to let custom cursor shine */
-            cursor: none;
         }
 
         body {
             overflow-x: hidden;
             position: relative;
-        }
-
-        /* --- CUSTOM MICRO-INTERACTIVE CURSOR --- */
-        .custom-cursor-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--brand-teal);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate3d(-50%, -50%, 0);
-            will-change: transform;
-        }
-
-        .custom-cursor-circle {
-            width: 34px;
-            height: 34px;
-            border: 1px solid rgba(57, 181, 202, 0.35);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate3d(-50%, -50%, 0);
-            will-change: transform, width, height, background-color, border-color;
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                        height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                        background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                        border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Interactive state expansion styling */
-        .custom-cursor-circle.expand {
-            width: 55px;
-            height: 55px;
-            background-color: rgba(57, 181, 202, 0.03);
-            border-color: rgba(57, 181, 202, 0.7);
         }
 
         /* Ambient Fluid Lighting directly using brand nodes */
@@ -123,7 +80,6 @@
             align-items: center;
             gap: 16px;
             text-decoration: none;
-            cursor: none;
         }
         .nav-logo-image {
             width: 32px;
@@ -144,9 +100,8 @@
         }
         .nav-links {
             display: flex;
-            gap: 3.5rem;
+            gap: 4rem;
             list-style: none;
-            align-items: center;
         }
         .nav-links a {
             font-size: 0.8rem;
@@ -155,29 +110,9 @@
             color: var(--text-muted);
             font-weight: 700;
             text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-            display: inline-block;
-            cursor: none;
+            transition: color 0.4s;
         }
-        .nav-links a:hover { 
-            color: var(--text-main); 
-        }
-
-        .nav-links a.active { 
-            color: var(--brand-blue); 
-            font-weight: 800;
-        }
-        .nav-links a.active::before {
-            content: "{ ";
-            color: var(--brand-teal); 
-            margin-right: 4px;
-        }
-        .nav-links a.active::after {
-            content: " }";
-            color: var(--brand-teal); 
-            margin-left: 4px;
-        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
 
         /* --- HERO AREA WITH BRAND GRADIENT SHIMMER --- */
         .hero {
@@ -247,7 +182,7 @@
             filter: drop-shadow(0 30px 60px rgba(57, 181, 202, 0.15));
         }
 
-        /* --- 4 INTERACTIVE MOVING PILLARS --- */
+        /* --- 4 INTERACTIVE MOVING PILLARS WITH BRAND HOVER MATCH --- */
         .pillars {
             padding: var(--fluid-padding) 0;
             border-top: 1px solid var(--border-fine);
@@ -291,6 +226,7 @@
         }
         .pillar-card * { transform-style: preserve-3d; }
         
+        /* Interactive border catches a subtle hint of the logo's teal on interaction */
         .pillar-card:hover {
             background: rgba(255, 255, 255, 0.015);
             border-color: rgba(57, 181, 202, 0.3);
@@ -342,8 +278,6 @@
             .hero-grid { grid-template-columns: 1fr; }
             .showcase-window { display: none; }
             .pillar-card { transform: none !important; }
-            html { cursor: default; }
-            .custom-cursor-dot, .custom-cursor-circle { display: none; }
         }
         @media (max-width: 650px) {
             .nav-links { display: none; }
@@ -352,10 +286,6 @@
     </style>
 </head>
 <body>
-
-    <!-- CUSTOM HARDWARE ACCELERATED MOUSE LAYER -->
-    <div class="custom-cursor-dot" id="cursor-dot"></div>
-    <div class="custom-cursor-circle" id="cursor-circle"></div>
 
     <div class="studio-lighting"></div>
 
@@ -366,9 +296,8 @@
                 <span class="logo">MANNINGS MEDIA</span>
             </a>
             <ul class="nav-links">
-                <li><a href="#" class="active">Home</a></li>
                 <li><a href="#work">Work</a></li>
-                <li><a href="#services">Services</a></li>
+                <li><a href="#services" class="active">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
@@ -383,6 +312,7 @@
                 </div>
                 
                 <div class="showcase-window perspective-card">
+                    <!-- Referencing verbatim strippedlogo.png asset window -->
                     <img src="/ManningsMedia/images/strippedlogo.png" alt="Mannings Media Logo">
                 </div>
             </div>
@@ -444,29 +374,6 @@
     </footer>
 
     <script>
-        // --- HIGH PERFORMANCE CUSTOM MOUSE TRACKING MATRIX ---
-        const dot = document.getElementById('cursor-dot');
-        const circle = document.getElementById('cursor-circle');
-
-        let mouseX = 0, mouseY = 0;      // Precise structural system targets
-        let circleX = 0, circleY = 0;    // Interpolated lazy circle positioning
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            // Instantly snap the center core core dot tracking layer
-            dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%,-50%,0)`;
-        });
-
-        // Track and flag expanded hover triggers
-        const interactives = document.querySelectorAll('a, button, .pillar-card');
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => circle.classList.add('expand'));
-            el.addEventListener('mouseleave', () => circle.classList.remove('expand'));
-        });
-
-        // --- PERSPECTIVE CARDS RENDER DATA SYSTEM ---
         const cardElements = document.querySelectorAll('.perspective-card');
         const cardsData = Array.from(cardElements).map(card => ({
             el: card, targetRotX: 0, targetRotY: 0, targetY: 0, currRotX: 0, currRotY: 0, currY: 0
@@ -492,21 +399,13 @@
 
         const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
 
-        // --- SINGLE UNIFIED RENDERING LOOP (60FPS/120FPS HARDWARE ALIGNED) ---
         function performRenderLoop() {
-            // 1. Render Lazy Circle Mouse Engine
-            circleX = lerp(circleX, mouseX, 0.12);
-            circleY = lerp(circleY, mouseY, 0.12);
-            circle.style.transform = `translate3d(${circleX}px, ${circleY}px, 0) translate3d(-50%,-50%,0)`;
-
-            // 2. Render Card Perspective Rotations
             cardsData.forEach(card => {
                 card.currRotX = lerp(card.currRotX, card.targetRotX, 0.08);
                 card.currRotY = lerp(card.currRotY, card.targetRotY, 0.08);
                 card.currY = lerp(card.currY, card.targetY, 0.08);
                 card.el.style.transform = `perspective(1000px) rotateX(${card.currRotX}deg) rotateY(${card.currRotY}deg) translateY(${card.currY}px)`;
             });
-            
             requestAnimationFrame(performRenderLoop);
         }
         requestAnimationFrame(performRenderLoop);
