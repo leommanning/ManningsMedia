@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Mannings Media</title>
+    <style>
+        /* --- DESIGN TOKENS & BRAND PALETTE FROM STRIPPEDLOGO.PNG --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-base: #141416;
+            --text-main: #F4F4F6;
+            --text-muted: #8E8E93;
+            --border-fine: rgba(255, 255, 255, 0.06);
+            --fluid-padding: clamp(2rem, 5vw, 6rem);
+            
+            /* Exact Colors sampled directly from strippedlogo.png */
+            --brand-glow-teal: rgba(57, 181, 202, 0.35); /* Bright Top Left gradient */
+            --brand-glow-blue: rgba(22, 100, 139, 0.4);  /* Deep Blue Bottom Right gradient */
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- FLUID BACKGROUND WITH EXACT LOGO MATCHED CHROMATICS --- */
+        .ambient-fluid-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            filter: blur(140px);
+            opacity: 0.85; 
+            pointer-events: none;
+        }
+        .liquid-blob {
+            position: absolute;
+            border-radius: 50%;
+            will-change: transform;
+            transform: translate3d(0,0,0);
+        }
+        #blob-teal {
+            width: 50vw;
+            height: 50vw;
+            bottom: -10%;
+            right: -5%;
+            background: radial-gradient(circle, var(--brand-glow-teal) 0%, transparent 75%);
+        }
+        #blob-blue {
+            width: 55vw;
+            height: 55vw;
+            top: -10%;
+            left: -5%;
+            background: radial-gradient(circle, var(--brand-glow-blue) 0%, transparent 75%);
+        }
+
+        /* --- CONTAINER --- */
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 var(--fluid-padding);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(20, 20, 22, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-fine);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+        }
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+        .nav-logo-image {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            opacity: 0.85;
+        }
+        .logo {
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.2em;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+        .nav-links {
+            display: flex;
+            gap: 3.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+
+        /* --- MAIN SECTION --- */
+        .contact-hero {
+            min-height: 100vh;
+            padding-top: 160px;
+            padding-bottom: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-split {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 8rem;
+            width: 100%;
+            align-items: start;
+        }
+
+        .contact-info-panel h1 {
+            font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 2.5rem;
+        }
+        .contact-info-panel p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 4.5rem;
+            max-width: 440px;
+        }
+
+        .direct-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+        .line-group h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+        .line-group a {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-main);
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* --- GLASS FORM PLATFORM --- */
+        .brief-form-panel {
+            position: relative;
+            background: rgba(255, 255, 255, 0.012);
+            border: 1px solid var(--border-fine);
+            padding: 4.5rem;
+            border-radius: 4px;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .input-wrapper label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .input-wrapper input, .input-wrapper textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 0;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.4s ease;
+            outline: none;
+            border-radius: 0;
+        }
+        .input-wrapper input:focus, .input-wrapper textarea:focus {
+            border-color: #39b5ca; /* Focus highlights match top of strippedlogo.png */
+        }
+
+        .service-matrix-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        .service-tag-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 3.5rem;
+        }
+        .matrix-tag input {
+            position: absolute;
+            opacity: 0;
+            width: 0; height: 0;
+        }
+        .tag-trigger {
+            display: block;
+            border: 1px solid var(--border-fine);
+            background: transparent;
+            padding: 0.9rem 0;
+            text-align: center;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .matrix-tag input:checked + .tag-trigger {
+            border-color: #39b5ca;
+            background: rgba(57, 181, 202, 0.05);
+            color: var(--text-main);
+        }
+
+        .submit-platform-btn {
+            width: 100%;
+            background: var(--text-main);
+            color: var(--bg-base);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 2px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .submit-platform-btn:hover { 
+            background: #39b5ca;
+            color: #fff;
+        }
+
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-fine);
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 1200px) {
+            .contact-split { grid-template-columns: 1fr; gap: 5rem; }
+            .service-tag-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 650px) {
+            .nav-links { display: none; }
+            .form-row { grid-template-columns: 1fr; gap: 2.5rem; }
+            .service-tag-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CHROMATIC LAYER INTEGRATED WITH BRAND TO COHESIVELY MATCH STRIPPEDLOGO.PNG -->
+    <div class="ambient-fluid-container">
+        <div class="liquid-blob" id="blob-teal"></div>
+        <div class="liquid-blob" id="blob-blue"></div>
+    </div>
+
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="brand-group">
+                <!-- Referenced verbatim strippedlogo.png layout emblem -->
+                <img class="nav-logo-image" src="/ManningsMedia/images/strippedlogo.png" alt="Mannings Media Emblem">
+                <span class="logo">MANNINGS MEDIA</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#work">Work</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="#" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container contact-hero">
+        <div class="contact-split">
+            
+            <div class="contact-info-panel">
+                <h1>Let's map out the architecture.</h1>
+                <p>Have an upcoming creative deployment or studio project on the horizon? Fill out the brief or reach out directly. Let's design the solution together.</p>
+                
+                <div class="direct-lines">
+                    <div class="line-group">
+                        <h3>Studio Workspace</h3>
+                        <a href="mailto:hello@manningsmedia.com">hello@manningsmedia.com</a>
+                    </div>
+                    <div class="line-group">
+                        <h3>Location Baseline</h3>
+                        <p style="margin: 0; font-size: 1.15rem; color: var(--text-main);">Essex region, UK</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="brief-form-panel" action="#" method="POST">
+                <div class="form-row">
+                    <div class="input-wrapper">
+                        <label for="client-name">Identity</label>
+                        <input type="text" id="client-name" name="name" required autocomplete="off">
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="client-email">Email Node</label>
+                        <input type="email" id="client-email" name="email" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="input-wrapper" style="margin-bottom: 3rem;">
+                    <label for="client-intel">Operational Scope</label>
+                    <input type="text" id="client-intel" name="intel" autocomplete="off">
+                </div>
+
+                <div class="matrix-container">
+                    <span class="service-matrix-label">Core Disciplines</span>
+                    <div class="service-tag-grid">
+                        <label class="matrix-tag">
+                            <input type="checkbox" name="discipline" value="design">
+                            <span class="tag-trigger">Design</span>
+                        </label>
+                        <label class="matrix-tag">
+                            <input type="checkbox" name="discipline" value="print">
+                            <span class="tag-trigger">Print</span>
+                        </label>
+                        <label class="matrix-tag">
+                            <input type="checkbox" name="discipline" value="web">
+                            <span class="tag-trigger">Web</span>
+                        </label>
+                        <label class="matrix-tag">
+                            <input type="checkbox" name="discipline" value="photography">
+                            <span class="tag-trigger">Photography</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-wrapper" style="margin-bottom: 4rem;">
+                    <label for="client-msg">Project Variables</label>
+                    <textarea id="client-msg" name="message" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="submit-platform-btn">Transmit Brief</button>
+            </form>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mannings Media. All rights reserved.</p>
+                <p>Designed for Clarity.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const blobTeal = document.getElementById('blob-teal');
+        const blobBlue = document.getElementById('blob-blue');
+
+        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const targetBlobs = { tealX: 0, tealY: 0, blueX: 0, blueY: 0 };
+        const currentBlobs = { tealX: 0, tealY: 0, blueX: 0, blueY: 0 };
+
+        const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+
+            let factorX = (mouse.x - window.innerWidth / 2);
+            let factorY = (mouse.y - window.innerHeight / 2);
+
+            targetBlobs.tealX = factorX * 0.12;
+            targetBlobs.tealY = factorY * 0.12;
+            targetBlobs.blueX = factorX * -0.12;
+            targetBlobs.blueY = factorY * -0.12;
+        });
+
+        function performRenderLoop() {
+            currentBlobs.tealX = lerp(currentBlobs.tealX, targetBlobs.tealX, 0.04);
+            currentBlobs.tealY = lerp(currentBlobs.tealY, targetBlobs.tealY, 0.04);
+            blobTeal.style.transform = `translate3d(${currentBlobs.tealX}px, ${currentBlobs.tealY}px, 0)`;
+
+            currentBlobs.blueX = lerp(currentBlobs.blueX, targetBlobs.blueX, 0.03);
+            currentBlobs.blueY = lerp(currentBlobs.blueY, targetBlobs.blueY, 0.03);
+            blobBlue.style.transform = `translate3d(${currentBlobs.blueX}px, ${currentBlobs.blueY}px, 0)`;
+
+            requestAnimationFrame(performRenderLoop);
+        }
+        requestAnimationFrame(performRenderLoop);
+    </script>
+</body>
+</html>
