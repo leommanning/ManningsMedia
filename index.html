@@ -3,948 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mannings Media — Full Spectrum Creative Studio</title>
+    <title>Lunara Studio</title>
     <style>
-        /* --- CORE ARCHITECTURE & LIGHT TOKENS --- */
-        *, *::before, *::after {
-            box-sizing: border-box;
+        /* --- RESET & ROOT SYSTEM --- */
+        * {
             margin: 0;
             padding: 0;
+            box-index: border-box;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         :root {
-            --bg-color: #212121; /* Premium Matte Charcoal Base */
-            --surface-color: rgba(255, 255, 255, 0.015); 
-            --text-primary: #FFFFFF; 
-            --text-secondary: #B0B8C4; /* Crisp silver contrast optimized for charcoal */
-            
-            /* Chromatic Core Light Wells */
-            --glow-cyan: rgba(0, 242, 254, 0.45);
-            --glow-violet: rgba(159, 4, 240, 0.38);
-            --glow-amber: rgba(255, 114, 0, 0.3);
-            
-            --transition-ultra: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-            --fluid-padding: clamp(2.5rem, 6vw, 8rem);
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-font-smoothing: antialiased;
+            --bg-pure: #0a0a0a;
+            --bg-surface: #121212;
+            --bg-card: #181818;
+            --text-main: #f5f5f7;
+            --text-muted: #86868b;
+            --accent-glow: rgba(0, 242, 254, 0.15);
+            --border-color: rgba(255, 255, 255, 0.04);
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
+            background-color: var(--bg-pure);
+            color: var(--text-main);
+            font-family: var(--font-family);
             overflow-x: hidden;
-            position: relative;
-            cursor: none; 
+            min-height: 100vh;
         }
 
-        /* --- STRUCTURAL GRID MESH MASK --- */
-        .structural-mesh {
+        /* --- AMBIENT NEON GLOW BACKGROUNDS --- */
+        .ambient-glow-1 {
             position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 120px 120px;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* --- LIQUID FLUID CHROMATIC FIELDS --- */
-        .ambient-fluid-container {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-            filter: blur(130px);
-            opacity: 0.85; 
-            pointer-events: none;
-        }
-        .liquid-blob {
-            position: absolute;
-            border-radius: 50%;
-            will-change: transform;
-            transform: translate3d(0,0,0);
-        }
-        #blob-cyan {
-            width: 55vw;
-            height: 55vw;
-            top: -15%;
-            right: -5%;
-            background: radial-gradient(circle, var(--glow-cyan) 0%, transparent 75%);
-        }
-        #blob-violet {
+            top: -10%;
+            right: -10%;
             width: 60vw;
             height: 60vw;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.05) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
             bottom: -10%;
             left: -10%;
-            background: radial-gradient(circle, var(--glow-violet) 0%, transparent 75%);
-        }
-        #blob-amber {
-            width: 45vw;
-            height: 45vw;
-            top: 35%;
-            left: 40%;
-            background: radial-gradient(circle, var(--glow-amber) 0%, transparent 70%);
-        }
-
-        /* --- EDITORIAL METADATA COLUMN --- */
-        .meta-sidebar {
-            position: absolute;
-            left: 2.5rem;
-            bottom: 10%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.04) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
             pointer-events: none;
-            z-index: 5;
-        }
-        .meta-line {
-            width: 1px;
-            height: 80px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);
-        }
-        .meta-text {
-            font-family: monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.35em;
-            color: rgba(255, 255, 255, 0.25);
-            writing-mode: vertical-rl;
-            text-transform: uppercase;
         }
 
-        /* --- PRELOADER INTRO CINEMA --- */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #212121;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .loader-wrap { text-align: center; }
-        .loader-title {
-            font-size: 1.2rem;
-            letter-spacing: 0.4em;
-            font-weight: 900;
-            color: #FFFFFF;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: introReveal 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .loader-bar {
-            width: 160px;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
+        /* --- TYPOGRAPHY & WRAPPERS --- */
+        .app-container {
             position: relative;
-            overflow: hidden;
+            z-index: 1;
+            max-width: 1440px;
             margin: 0 auto;
-        }
-        .loader-bar::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 0;
-            background: #FFFFFF;
-            animation: loadProgress 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes loadProgress { to { width: 100%; } }
-        @keyframes introReveal {
-            0% { opacity: 0; transform: translateY(20px); filter: blur(5px); }
-            30% { opacity: 1; transform: translateY(0); filter: blur(0); }
-            85% { opacity: 1; filter: blur(0); }
-            100% { opacity: 0; transform: translateY(-15px); filter: blur(5px); }
+            padding: 40px;
         }
 
-        /* --- KINETIC PHYSIC-TRACKING CURSORS --- */
-        #custom-cursor {
-            width: 6px;
-            height: 6px;
-            background: #FFFFFF;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate3d(-50%, -50%, 0);
-            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border 0.3s ease;
-            will-change: transform;
-        }
-        #custom-cursor-aura {
-            width: 44px;
-            height: 44px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate3d(-50%, -50%, 0);
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, background-color 0.4s;
-            will-change: transform;
-        }
-
-        /* --- INTERSECTION REVEAL SYSTEMS --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: var(--transition-ultra);
-            will-change: transform, opacity;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .stagger-1 { transition-delay: 0.08s; }
-        .stagger-2 { transition-delay: 0.16s; }
-        .stagger-3 { transition-delay: 0.24s; }
-        .stagger-4 { transition-delay: 0.32s; }
-
-        /* --- CONTAINER STRUCTURE --- */
-        .container {
-            width: 100%;
-            max-width: 1760px;
-            margin: 0 auto;
-            padding: 0 var(--fluid-padding);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* --- HEADER NAVIGATION BLUR PLATFORM --- */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            background: rgba(33, 33, 33, 0.7); 
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-        }
-        .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 95px;
+            margin-bottom: 80px;
         }
-        .logo {
-            font-weight: 900;
-            font-size: 1.15rem;
-            letter-spacing: 0.28em;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 4rem;
-            list-style: none;
-        }
-        .nav-links a {
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            font-weight: 700;
-            text-decoration: none;
-            transition: color 0.4s;
-        }
-        .nav-links a:hover { color: var(--text-primary); }
 
-        /* --- KINETIC HERO AREA --- */
-        .hero {
-            min-height: 100vh;
+        .brand-container {
             display: flex;
             align-items: center;
-            padding-top: 95px;
-            position: relative;
+            gap: 12px;
         }
+
+        .brand-logo-dot {
+            width: 10px;
+            height: 10px;
+            background: #00f2fe;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00f2fe;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        /* --- HERO SPLIT GRID --- */
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.25fr 0.75fr;
-            gap: 5rem;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
             align-items: center;
-            width: 100%;
+            margin-top: 40px;
         }
-        
-        .hero-text h1 {
-            font-size: clamp(3.2rem, 6.2vw, 5.8rem);
-            font-weight: 900;
-            line-height: 0.95;
-            letter-spacing: -0.035em;
-            text-transform: uppercase;
-            margin-bottom: 2.5rem;
-            
-            background: linear-gradient(135deg, #FFFFFF 25%, #00f2fe 65%, #9f04f0 100%);
-            background-size: 200% auto;
+
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+        }
+
+        .hero-text-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+        }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.75rem;
+            }
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            
-            will-change: transform;
-            transform: translate3d(0,0,0);
-            animation: textShimmer 8s linear infinite;
         }
-        @keyframes textShimmer {
-            to { background-position: 200% center; }
+
+        .hero-description {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 540px;
         }
-        
-        .hero-text p {
-            font-size: clamp(1.15rem, 1.6vw, 1.45rem);
-            line-height: 1.65;
-            color: var(--text-secondary);
-            max-width: 650px;
+
+        .cta-container {
+            margin-top: 12px;
         }
-        
+
+        .cta-button {
+            display: inline-block;
+            background: var(--text-main);
+            color: var(--bg-pure);
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+        }
+
+        /* --- PERFORMANCE UPDATED LOGO SHOWCASE CONTAINER --- */
         .showcase-window {
             position: relative;
             width: 100%;
-            aspect-ratio: 3/4;
-            background: #191919;
-            border: 1px solid rgba(255,255,255,0.06);
-            overflow: hidden;
-            border-radius: 8px;
+            aspect-ratio: 1 / 1; /* Pure square for perfect geometric balancing of your logo */
+            background: transparent; /* No heavy dark block backgrounds so your transparent asset blends perfectly */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             transform-style: preserve-3d;
             perspective: 1000px;
             will-change: transform;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.35);
-            transition: box-shadow 0.4s ease;
         }
-        .showcase-window:hover {
-            box-shadow: 0 40px 100px rgba(0, 242, 254, 0.22);
-        }
+
         .showcase-window img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.05);
-            opacity: 0.85;
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
-        }
-        .showcase-window:hover img {
-            transform: scale(1.01);
-            opacity: 1;
-        }
-
-        /* --- CAPABILITY GRID PANELS --- */
-        .pillars {
-            padding: var(--fluid-padding) 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
-        .section-label {
-            font-size: 0.75rem;
-            letter-spacing: 0.35em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 4.5rem;
-            display: block;
-            font-weight: 700;
-        }
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.8rem;
-            perspective: 1200px;
-        }
-        
-        /* Premium Quiet Luxury Glass Blueprint */
-        .pillar-card {
-            position: relative;
-            background: rgba(255, 255, 255, 0.015);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: inset 0 1px 0px rgba(255,255,255,0.02), 0 20px 50px rgba(0,0,0,0.15);
-            padding: 5rem 2.8rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 400px;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            border-radius: 8px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            will-change: transform;
-            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .pillar-card * { transform-style: preserve-3d; }
-        
-        /* Razor-thin highlight catch on hover */
-        .pillar-card:hover {
-            background: rgba(255, 255, 255, 0.025);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: inset 0 1px 0px rgba(255,255,255,0.05), 0 30px 60px rgba(0, 0, 0, 0.2);
-        }
-
-        .pillar-num {
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            transform: translateZ(15px);
-        }
-        .pillar-card h3 {
-            font-size: 2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
-            letter-spacing: -0.015em;
-            color: var(--text-primary);
-            transform: translateZ(30px);
-        }
-        .pillar-card p {
-            font-size: 0.98rem;
-            line-height: 1.65;
-            color: var(--text-secondary);
-            transform: translateZ(20px);
-            transition: color 0.4s;
-        }
-        .pillar-card:hover p { color: var(--text-primary); }
-
-        /* --- ASYMMETRIC CINEMATIC PORTFOLIO GALLERY --- */
-        .portfolio {
-            padding: var(--fluid-padding) 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 7rem 3.5rem;
-        }
-        .portfolio-item { position: relative; }
-        .portfolio-item:nth-child(1) { grid-column: span 7; }
-        .portfolio-item:nth-child(2) { grid-column: span 5; margin-top: 9rem; }
-        .portfolio-item:nth-child(3) { grid-column: start 2 / span 10; }
-
-        .portfolio-link-wrap {
-            display: block;
-            overflow: hidden;
-            position: relative;
-            background: #191919;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-            will-change: transform;
-            transition: box-shadow 0.4s ease;
-        }
-        
-        /* Camera-lens focal reveal transition engine */
-        .portfolio-img-box {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            opacity: 0;
-            transform: scale(1.12);
-            filter: blur(10px);
-            will-change: transform, filter, opacity;
-            transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                        filter 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                        opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .portfolio-item:nth-child(3) .portfolio-img-box { aspect-ratio: 22 / 9; }
-        
-        /* Settle and focus state on scroll trigger */
-        .reveal.active .portfolio-img-box {
+            width: 85%;
+            height: 85%;
+            object-fit: contain; /* Prevents your transparent PNG from clipping or stretching out of scale */
             transform: scale(1);
-            filter: blur(0px);
-            opacity: 0.85;
+            opacity: 0.95;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5)); /* Adds smooth physical drop projection along the edges */
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s, filter 0.4s;
         }
-        
-        .portfolio-link-wrap:hover .portfolio-img-box {
-            transform: scale(1.02);
+
+        /* Elegant response when hovering over the interactive hero window area */
+        .showcase-window:hover img {
+            transform: scale(1.04) translateZ(25px); /* Subtly floats your identity forward in virtual 3D space */
             opacity: 1;
-        }
-        .portfolio-link-wrap:hover {
-            box-shadow: 0 40px 90px rgba(0, 0, 0, 0.4);
-        }
-
-        .portfolio-meta {
-            margin-top: 1.85rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            position: relative;
-            z-index: 2;
-        }
-        .portfolio-title {
-            font-size: 1.45rem;
-            font-weight: 800;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-        }
-        .portfolio-tags {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-family: monospace;
-            font-weight: 600;
-        }
-
-        /* --- THE SIGNATURE FOOTER ARCHITECTURE --- */
-        footer {
-            padding: calc(var(--fluid-padding) * 1.5) 0 var(--fluid-padding) 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(33, 33, 33, 0.5);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            position: relative;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 5rem;
-            align-items: flex-end;
-        }
-        .footer-left h2 {
-            font-size: clamp(2.5rem, 5.2vw, 4.5rem);
-            font-weight: 900;
-            line-height: 1.05;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            margin-bottom: 3.5rem;
-            background: linear-gradient(135deg, #FFFFFF 30%, #ff7200 70%, #9f04f0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .magnetic-cta {
-            display: inline-block;
-            padding: 0.85rem 0;
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            border-bottom: 2px solid var(--text-primary);
-            position: relative;
-            text-decoration: none;
-            transition: transform 0.2s ease;
-            will-change: transform;
-        }
-        .magnetic-cta::after {
-            content: ' →';
-            opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
-            transform: translate3d(-10px, 0, 0);
-            display: inline-block;
-        }
-        .magnetic-cta:hover::after {
-            opacity: 1;
-            transform: translate3d(6px, 0, 0);
-        }
-        .footer-right {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8rem;
-        }
-        .footer-col h4 {
-            font-size: 0.75rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 2.2rem;
-            font-weight: 800;
-        }
-        .footer-col ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
-        .footer-col a {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .footer-col a:hover { color: var(--text-primary); }
-
-        .footer-bottom {
-            margin-top: 9rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-family: monospace;
-            font-weight: 600;
-        }
-
-        /* --- RESPONSIVE PLATFORM RULES --- */
-        @media (max-width: 1250px) {
-            .pillars-grid { grid-template-columns: repeat(2, 1fr); }
-            .portfolio-grid { gap: 4.5rem 2rem; }
-            .portfolio-item:nth-child(1), .portfolio-item:nth-child(2), .portfolio-item:nth-child(3) {
-                grid-column: span 12;
-                margin-top: 0;
-            }
-            .portfolio-item:nth-child(3) .portfolio-img-box { aspect-ratio: 16 / 10; }
-        }
-        @media (max-width: 1100px) {
-            .meta-sidebar { display: none; }
-        }
-        @media (max-width: 950px) {
-            .hero-grid { grid-template-columns: 1fr; }
-            .showcase-window { display: none; }
-            .footer-grid { grid-template-columns: 1fr; gap: 4rem; }
-            .footer-right { justify-content: flex-start; }
-            body { cursor: default; }
-            #custom-cursor, #custom-cursor-aura { display: none; }
-            .ambient-fluid-container { opacity: 0.5; }
-            .pillar-card { transform: none !important; }
-        }
-        @media (max-width: 650px) {
-            .nav-links { display: none; }
-            .pillars-grid { grid-template-columns: 1fr; }
-            .footer-right { flex-direction: column; gap: 3.5rem; }
+            filter: drop-shadow(0 30px 60px rgba(0, 242, 254, 0.22)); /* Emits a clean neon backing reflection */
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-fluid-container">
-        <div class="liquid-blob" id="blob-cyan"></div>
-        <div class="liquid-blob" id="blob-violet"></div>
-        <div class="liquid-blob" id="blob-amber"></div>
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <div class="app-container">
+        
+        <header>
+            <div class="brand-container">
+                <div class="brand-logo-dot"></div>
+                <div class="brand-name">Lunara Studio</div>
+            </div>
+            <div class="status-badge">
+                <div class="status-indicator"></div>
+                <span>Engine Active</span>
+            </div>
+        </header>
+
+        <main class="hero-grid">
+            
+            <section class="hero-text-content">
+                <h1 class="hero-title">
+                    <span>Next-generation project architectures.</span>
+                </h1>
+                <p class="hero-description">
+                    Engineered to bring clean structures, deep clarity, and elite automation systems to complex production design systems and studio workflows.
+                </p>
+                <div class="cta-container">
+                    <a href="#" class="cta-button">Initiate Project</a>
+                </div>
+            </section>
+
+            <!-- LOGO PRESENTATION MODULE -->
+            <section class="showcase-window hover-target perspective-card">
+                <img src="images/logo.png" alt="Lunara Brand Identity">
+            </section>
+
+        </main>
+
     </div>
-    <div class="structural-mesh"></div>
-
-    <div id="custom-cursor"></div>
-    <div id="custom-cursor-aura"></div>
-
-    <div id="loader">
-        <div class="loader-wrap">
-            <div class="loader-title">MANNINGS MEDIA</div>
-            <div class="loader-bar"></div>
-        </div>
-    </div>
-
-    <header>
-        <div class="container nav-container">
-            <a href="#" class="logo hover-target">MANNINGS MEDIA</a>
-            <ul class="nav-links">
-                <li><a href="#work" class="hover-target">Work</a></li>
-                <li><a href="#services" class="hover-target">Services</a></li>
-                <li><a href="#contact" class="hover-target">Contact</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="meta-sidebar">
-            <span class="meta-line"></span>
-            <span class="meta-text">EST. DIRECTORY // 51.89N 1.21E</span>
-        </div>
-
-        <div class="container hero-grid">
-            <div class="hero-text">
-                <h1 id="kinetic-title">Pixels & Paper.<br>Unified Vision.</h1>
-                <p>We are a high-discipline creative studio eliminating friction for progressive brands. By cross-pollinating strategy, web development, print craft, and photography, we protect creative integrity from inception to real-world presence.</p>
-            </div>
-            <div class="showcase-window hover-target perspective-card">
-                <img src="https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=1000&q=80" alt="Ecosystem Strategy Node">
-            </div>
-        </div>
-    </section>
-
-    <section class="pillars" id="services">
-        <div class="container">
-            <span class="section-label reveal">Capabilities & Infrastructure</span>
-            <div class="pillars-grid">
-                
-                <div class="pillar-card reveal perspective-card stagger-1">
-                    <span class="pillar-num">// 01 Visual Identity</span>
-                    <div>
-                        <h3>Design</h3>
-                        <p>Bespoke system architecture, UI engineering matrices, and continuous brand layout design blueprints built to scale.</p>
-                    </div>
-                </div>
-
-                <div class="pillar-card reveal perspective-card stagger-2">
-                    <span class="pillar-num">// 02 Physical Form</span>
-                    <div>
-                        <h3>Print</h3>
-                        <p>Premium execution across material mediums, tangible dimensional assets, and high-spec production control.</p>
-                    </div>
-                </div>
-
-                <div class="pillar-card reveal perspective-card stagger-3">
-                    <span class="pillar-num">// 03 Interactive Platforms</span>
-                    <div>
-                        <h3>Web</h3>
-                        <p>High-efficiency frontend ecosystems, custom functional script designs, and completely fluid interface deployment.</p>
-                    </div>
-                </div>
-
-                <div class="pillar-card reveal perspective-card stagger-4">
-                    <span class="pillar-num">// 04 Authentic Narrative</span>
-                    <div>
-                        <h3>Photography</h3>
-                        <p>Cinematic production capture, architectural spatial documentation, and high-fidelity product asset archives.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="portfolio" id="work">
-        <div class="container">
-            <span class="section-label reveal">Selected Curations</span>
-            <div class="portfolio-grid">
-                
-                <div class="portfolio-item reveal">
-                    <a href="#" class="portfolio-link-wrap hover-target perspective-card">
-                        <img class="portfolio-img-box" src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80" alt="Studio Platform Deployment">
-                    </a>
-                    <div class="portfolio-meta">
-                        <span class="portfolio-title">The Lunara Ecosystem</span>
-                        <span class="portfolio-tags">Design & Digital Engine</span>
-                    </div>
-                </div>
-
-                <div class="portfolio-item reveal">
-                    <a href="#" class="portfolio-link-wrap hover-target perspective-card">
-                        <img class="portfolio-img-box" src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1000&q=80" alt="Material Brand Mockup">
-                    </a>
-                    <div class="portfolio-meta">
-                        <span class="portfolio-title">Tactile Brand Systems</span>
-                        <span class="portfolio-tags">Print Production & Capture</span>
-                    </div>
-                </div>
-
-                <div class="portfolio-item reveal">
-                    <a href="#" class="portfolio-link-wrap hover-target perspective-card">
-                        <img class="portfolio-img-box" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80" alt="Integrated Strategy Matrix">
-                    </a>
-                    <div class="portfolio-meta">
-                        <span class="portfolio-title">Full Spectrum Campaign Architecture</span>
-                        <span class="portfolio-tags">Design, Print, Web, Photo</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="container reveal">
-            <div class="footer-grid">
-                <div class="footer-left">
-                    <h2>Let's synthesize<br>something meaningful.</h2>
-                    <a href="mailto:hello@manningsmedia.com" class="magnetic-cta hover-target">Initiate Engagement</a>
-                </div>
-                <div class="footer-right">
-                    <div class="footer-col">
-                        <h4>Studio Directory</h4>
-                        <ul>
-                            <li><a href="#work" class="hover-target">Executions</a></li>
-                            <li><a href="#services" class="hover-target">Ecosystems</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Secure Lines</h4>
-                        <ul>
-                            <li><a href="mailto:hello@manningsmedia.com" class="hover-target">Email Direct</a></li>
-                            <li><a href="#" class="hover-target">LinkedIn Matrix</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Mannings Media. All rights reserved.</p>
-                <p>Engineered to Stand Out.</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
-        // 1. Structural preloader lifecycle cleanup
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.style.transform = 'translateY(-100%)';
-            }, 1800);
-        });
-
-        // 2. Physics Interpolation Coordinates
-        const cursor = document.getElementById('custom-cursor');
-        const aura = document.getElementById('custom-cursor-aura');
-        const blobCyan = document.getElementById('blob-cyan');
-        const blobViolet = document.getElementById('blob-violet');
-        const blobAmber = document.getElementById('blob-amber');
-        const kineticTitle = document.getElementById('kinetic-title');
-
-        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        const targetCursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        const targetAura = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        const targetTitle = { x: 0, y: 0, skew: 0 };
-        const currentTitle = { x: 0, y: 0, skew: 0 };
+        // High-fidelity 3D Mouse Trajectory Tracker
+        const card = document.querySelector('.perspective-card');
         
-        const targetBlobs = { cyanX: 0, cyanY: 0, violetX: 0, violetY: 0, amberX: 0, amberY: 0 };
-        const currentBlobs = { cyanX: 0, cyanY: 0, violetX: 0, violetY: 0, amberX: 0, amberY: 0 };
-
-        const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-
-            // Ambient fluid shifts
-            let factorX = (mouse.x - window.innerWidth / 2);
-            let factorY = (mouse.y - window.innerHeight / 2);
-
-            targetBlobs.cyanX = factorX * 0.16;
-            targetBlobs.cyanY = factorY * 0.16;
-            targetBlobs.violetX = factorX * -0.12;
-            targetBlobs.violetY = factorY * -0.12;
-            targetBlobs.amberX = factorX * 0.08;
-            targetBlobs.amberY = factorY * -0.2;
-
-            // Kinetic Title Deflection Matrix
-            let titleRect = kineticTitle.getBoundingClientRect();
-            let titleCenterX = titleRect.left + titleRect.width / 2;
-            let titleCenterY = titleRect.top + titleRect.height / 2;
-            let distToTitleX = mouse.x - titleCenterX;
-            let distToTitleY = mouse.y - titleCenterY;
-            
-            if (Math.abs(distToTitleX) < 500 && Math.abs(distToTitleY) < 400) {
-                targetTitle.x = distToTitleX * 0.04;
-                targetTitle.y = distToTitleY * 0.04;
-                targetTitle.skew = distToTitleX * 0.015;
-            } else {
-                targetTitle.x = 0;
-                targetTitle.y = 0;
-                targetTitle.skew = 0;
-            }
-        });
-
-        // 3D Card tilt configurations
-        const cardElements = document.querySelectorAll('.perspective-card');
-        const cardsData = Array.from(cardElements).map(card => ({
-            el: card,
-            targetRotX: 0, targetRotY: 0, targetY: 0,
-            currRotX: 0, currRotY: 0, currY: 0
-        }));
-
-        cardsData.forEach((cardData) => {
-            cardData.el.addEventListener('mousemove', (e) => {
-                let rect = cardData.el.getBoundingClientRect();
-                let x = e.clientX - rect.left; 
-                let y = e.clientY - rect.top; 
-                let centerX = rect.width / 2;
-                let centerY = rect.height / 2;
+        if (card) {
+            document.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - (rect.width / 2);
+                const y = e.clientY - rect.top - (rect.height / 2);
                 
-                cardData.targetRotX = (centerY - y) * 0.06; 
-                cardData.targetRotY = (x - centerX) * 0.06;
-                cardData.targetY = -8;
+                // Fine-tuned constraints to ensure interactive movement feels premium and smooth
+                const rotateX = -(y / (rect.height / 2)) * 12;
+                const rotateY = (x / (rect.width / 2)) * 12;
+                
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
 
-            cardData.el.addEventListener('mouseleave', () => {
-                cardData.targetRotX = 0;
-                cardData.targetRotY = 0;
-                cardData.targetY = 0;
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
             });
-        });
-
-        // Elastic CTA magnet function
-        const magneticElements = document.querySelectorAll('.magnetic-cta');
-        magneticElements.forEach(el => {
-            el.addEventListener('mousemove', function(e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                this.style.transform = `translate3d(${x * 0.35}px, ${y * 0.35}px, 0)`;
-            });
-            el.addEventListener('mouseleave', function() {
-                this.style.transform = 'translate3d(0, 0, 0)';
-            });
-        });
-
-        // Main animation engine rendering thread
-        function performRenderLoop() {
-            targetCursor.x = lerp(targetCursor.x, mouse.x, 0.35);
-            targetCursor.y = lerp(targetCursor.y, mouse.y, 0.35);
-            cursor.style.transform = `translate3d(${targetCursor.x}px, ${targetCursor.y}px, 0) translate(-50%, -50%)`;
-
-            targetAura.x = lerp(targetAura.x, mouse.x, 0.095);
-            targetAura.y = lerp(targetAura.y, mouse.y, 0.095);
-            aura.style.transform = `translate3d(${targetAura.x}px, ${targetAura.y}px, 0) translate(-50%, -50%)`;
-
-            currentBlobs.cyanX = lerp(currentBlobs.cyanX, targetBlobs.cyanX, 0.04);
-            currentBlobs.cyanY = lerp(currentBlobs.cyanY, targetBlobs.cyanY, 0.04);
-            blobCyan.style.transform = `translate3d(${currentBlobs.cyanX}px, ${currentBlobs.cyanY}px, 0)`;
-
-            currentBlobs.violetX = lerp(currentBlobs.violetX, targetBlobs.violetX, 0.03);
-            currentBlobs.violetY = lerp(currentBlobs.violetY, targetBlobs.violetY, 0.03);
-            blobViolet.style.transform = `translate3d(${currentBlobs.violetX}px, ${currentBlobs.violetY}px, 0)`;
-
-            currentBlobs.amberX = lerp(currentBlobs.amberX, targetBlobs.amberX, 0.03);
-            currentBlobs.amberY = lerp(currentBlobs.amberY, targetBlobs.amberY, 0.03);
-            blobAmber.style.transform = `translate3d(${currentBlobs.amberX}px, ${currentBlobs.amberY}px, 0)`;
-
-            currentTitle.x = lerp(currentTitle.x, targetTitle.x, 0.06);
-            currentTitle.y = lerp(currentTitle.y, targetTitle.y, 0.06);
-            currentTitle.skew = lerp(currentTitle.skew, targetTitle.skew, 0.06);
-            kineticTitle.style.transform = `translate3d(${currentTitle.x}px, ${currentTitle.y}px, 0) skewX(${currentTitle.skew}deg)`;
-
-            cardsData.forEach(card => {
-                card.currRotX = lerp(card.currRotX, card.targetRotX, 0.08);
-                card.currRotY = lerp(card.currRotY, card.targetRotY, 0.08);
-                card.currY = lerp(card.currY, card.targetY, 0.08);
-                card.el.style.transform = `perspective(1000px) rotateX(${card.currRotX}deg) rotateY(${card.currRotY}deg) translateY(${card.currY}px)`;
-            });
-
-            requestAnimationFrame(performRenderLoop);
         }
-        requestAnimationFrame(performRenderLoop);
-
-        // Interactive UI aura state updates
-        const hoverTargets = document.querySelectorAll('.hover-target, a, .pillar-card');
-        hoverTargets.forEach(target => {
-            target.addEventListener('mouseenter', () => {
-                cursor.style.width = '12px';
-                cursor.style.height = '12px';
-                cursor.style.backgroundColor = 'transparent';
-                cursor.style.border = '1px solid #FFFFFF';
-                
-                aura.style.width = '60px';
-                aura.style.height = '60px';
-                aura.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                aura.style.borderColor = 'rgba(255, 255, 255, 0.4)';
-            });
-            target.addEventListener('mouseleave', () => {
-                cursor.style.width = '6px';
-                cursor.style.height = '6px';
-                cursor.style.backgroundColor = '#FFFFFF';
-                cursor.style.border = 'none';
-                
-                aura.style.width = '44px';
-                aura.style.height = '44px';
-                aura.style.backgroundColor = 'transparent';
-                aura.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-            });
-        });
-
-        // Optimized structural scroll viewport tracking
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.05, rootMargin: "0px 0px -30px 0px" });
-
-        revealElements.forEach(el => revealObserver.observe(el));
     </script>
 </body>
 </html>
