@@ -235,13 +235,33 @@
             align-items: center;
             height: 95px;
         }
+        
+        /* Brand Group Layout for Logo + Text Integration */
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+        }
+        .nav-logo-image {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            opacity: 0.9;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+        }
+        .brand-group:hover .nav-logo-image {
+            transform: rotate(5deg) scale(1.08);
+            opacity: 1;
+        }
+        
         .logo {
             font-weight: 900;
             font-size: 1.15rem;
             letter-spacing: 0.28em;
             color: var(--text-primary);
-            text-decoration: none;
         }
+        
         .nav-links {
             display: flex;
             gap: 4rem;
@@ -302,12 +322,12 @@
             max-width: 650px;
         }
         
-        /* PREVENTING CHEAP BOX LAYOUTS: Optimized Transparent Logo Module Container */
+        /* Showcase container for the primary hero asset */
         .showcase-window {
             position: relative;
             width: 100%;
-            aspect-ratio: 1 / 1; /* Clean square geometry to perfectly house your badge asset */
-            background: transparent; /* Removed all blocks of dark color so transparency integrates seamlessly */
+            aspect-ratio: 1 / 1;
+            background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -318,16 +338,16 @@
         .showcase-window img {
             width: 85%;
             height: 85%;
-            object-fit: contain; /* Critical execution: prevents your transparent PNG shape from stretching */
+            object-fit: contain;
             transform: scale(1);
             opacity: 0.95;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5)); /* Throws depth along alpha channel edge tracks */
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s, filter 0.4s;
         }
         .showcase-window:hover img {
-            transform: scale(1.05) translateZ(25px); /* Subtly floats your brand identity forward in 3D on hover */
+            transform: scale(1.05) translateZ(25px);
             opacity: 1;
-            filter: drop-shadow(0 30px 60px rgba(0, 242, 254, 0.22)); /* Premium custom neon backing reflection */
+            filter: drop-shadow(0 30px 60px rgba(0, 242, 254, 0.22));
         }
 
         /* --- CAPABILITY GRID PANELS --- */
@@ -352,7 +372,6 @@
             perspective: 1200px;
         }
         
-        /* Premium Quiet Luxury Glass Blueprint */
         .pillar-card {
             position: relative;
             background: rgba(255, 255, 255, 0.015);
@@ -375,7 +394,6 @@
         }
         .pillar-card * { transform-style: preserve-3d; }
         
-        /* Razor-thin highlight catch on hover */
         .pillar-card:hover {
             background: rgba(255, 255, 255, 0.025);
             border-color: rgba(255, 255, 255, 0.2);
@@ -436,7 +454,6 @@
             transition: box-shadow 0.4s ease;
         }
         
-        /* Camera-lens focal reveal transition engine */
         .portfolio-img-box {
             width: 100%;
             aspect-ratio: 16 / 10;
@@ -450,7 +467,6 @@
         }
         .portfolio-item:nth-child(3) .portfolio-img-box { aspect-ratio: 22 / 9; }
         
-        /* Settle and focus state on scroll trigger */
         .reveal.active .portfolio-img-box {
             transform: scale(1);
             filter: blur(0px);
@@ -630,7 +646,11 @@
     <!-- STRUCTURAL HEADER NAVIGATION -->
     <header>
         <div class="container nav-container">
-            <a href="#" class="logo hover-target">MANNINGS MEDIA</a>
+            <!-- BRAND GROUP: Integrates the stripped-down logo badge with the brand text -->
+            <a href="#" class="brand-group hover-target">
+                <img class="nav-logo-image" src="/ManningsMedia/images/strippedlogo.png" alt="Mannings Media Emblem">
+                <span class="logo">MANNINGS MEDIA</span>
+            </a>
             <ul class="nav-links">
                 <li><a href="#work" class="hover-target">Work</a></li>
                 <li><a href="#services" class="hover-target">Services</a></li>
@@ -653,7 +673,7 @@
                 <p>We are a high-discipline creative studio eliminating friction for progressive brands. By cross-pollinating strategy, web development, print craft, and photography, we protect creative integrity from inception to real-world presence.</p>
             </div>
             
-            <!-- FIXED HIGH-FIDELITY TRANSPARENT LOGO WRAPPER -->
+            <!-- THE HERO PRESENCE ASSET CONTAINER -->
             <div class="showcase-window hover-target perspective-card">
                 <img src="/ManningsMedia/images/logo.png" alt="Mannings Media Logo">
             </div>
