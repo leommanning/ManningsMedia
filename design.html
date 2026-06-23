@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design — Mannings Media</title>
+    <style>
+        /* --- DESIGN TOKENS & BRAND PALETTE --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+
+        :root {
+            --bg-base: #0a0a0c;
+            --surface-color: rgba(255, 255, 255, 0.015);
+            --text-main: #F4F4F6;
+            --text-muted: #8E8E93;
+            --border-fine: rgba(255, 255, 255, 0.04);
+            --fluid-padding: clamp(2.5rem, 6vw, 8rem);
+            --brand-teal: #39b5ca;
+            --brand-blue: #16648b;
+            --brand-teal-light: rgba(57, 181, 202, 0.1);
+            --brand-blue-light: rgba(22, 100, 139, 0.1);
+            --card-radius: 12px;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Ambient Fluid Lighting */
+        .studio-lighting {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(57, 181, 202, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(22, 100, 139, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(20, 20, 22, 0.9) 0%, rgba(10, 10, 12, 1) 100%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1760px;
+            margin: 0 auto;
+            padding: 0 var(--fluid-padding);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border-fine);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 12, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 85px;
+            position: relative;
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @media (min-width: 769px) {
+            .brand-group {
+                position: static;
+                transform: none;
+            }
+        }
+
+        .brand-group:hover {
+            opacity: 0.85;
+        }
+        .nav-logo-image {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            opacity: 0.9;
+            transition: transform 0.4s var(--transition-smooth);
+        }
+        .brand-group:hover .nav-logo-image {
+            transform: scale(1.05);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #fff 0%, var(--brand-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a.active {
+            color: var(--brand-teal);
+        }
+
+        .nav-links a.active::before {
+            content: '{ ';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        .nav-links a.active::after {
+            content: ' }';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        .nav-links a:not(.active)::before,
+        .nav-links a:not(.active)::after {
+            content: '';
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            z-index: 101;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--text-main);
+            transition: all 0.3s var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 10, 12, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 99;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            opacity: 0;
+            transition: opacity 0.4s var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu a {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--text-main);
+        }
+
+        .mobile-menu a.active {
+            color: var(--brand-teal);
+        }
+
+        .mobile-menu a.active::before {
+            content: '{ ';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        .mobile-menu a.active::after {
+            content: ' }';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        /* --- HERO SECTION (Consistent with homepage) --- */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            padding-top: 85px;
+            position: relative;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 5rem;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .hero-text h1 {
+            font-size: clamp(3.5rem, 6.5vw, 5.8rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            
+            background: linear-gradient(135deg, #FFFFFF 15%, var(--brand-teal) 55%, var(--brand-blue) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 8s linear infinite;
+        }
+        @keyframes textShimmer {
+            to { background-position: 200% center; }
+        }
+        
+        .hero-text p {
+            font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 600px;
+            font-weight: 300;
+            letter-spacing: 0.01em;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-family: var(--font-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(57, 181, 202, 0.3);
+        }
+
+        /* Showcase Window with Adobe Suite Animation */
+        .showcase-window {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            will-change: transform;
+        }
+
+        .showcase-window .adobe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 85%;
+            height: 85%;
+            animation: floatGrid 6s ease-in-out infinite;
+        }
+
+        @keyframes floatGrid {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-10px) rotateX(2deg); }
+        }
+
+        .adobe-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-fine);
+            border-radius: var(--card-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            transition: all 0.4s var(--transition-smooth);
+            animation: pulseItem 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .adobe-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--brand-teal-light), var(--brand-blue-light));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .adobe-item:hover::before {
+            opacity: 1;
+        }
+
+        .adobe-item:hover {
+            transform: scale(1.05) translateZ(20px);
+            border-color: var(--brand-teal);
+        }
+
+        .adobe-item:nth-child(1) { animation-delay: 0s; }
+        .adobe-item:nth-child(2) { animation-delay: 0.5s; }
+        .adobe-item:nth-child(3) { animation-delay: 1s; }
+        .adobe-item:nth-child(4) { animation-delay: 1.5s; }
+
+        @keyframes pulseItem {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .adobe-item svg {
+            width: 40px;
+            height: 40px;
+            fill: none;
+            stroke: var(--brand-teal);
+            stroke-width: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .adobe-item span {
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        /* Glowing ring around the showcase */
+        .showcase-window::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(57, 181, 202, 0.1) 0%, transparent 70%);
+            animation: pulseGlow 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* --- SECTION LABEL (Consistent) --- */
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.35em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 3.5rem;
+            display: block;
+            font-weight: 600;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .section-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.5rem;
+            height: 2px;
+            background: var(--brand-teal);
+        }
+
+        /* --- CAPABILITIES GRID (Consistent with homepage pillars) --- */
+        .capabilities {
+            padding: var(--fluid-padding) 0;
+            border-top: 1px solid var(--border-fine);
+            position: relative;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            perspective: 1200px;
+        }
+
+        .capability-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-fine);
+            border-radius: var(--card-radius);
+            box-shadow: inset 0 1px 0px rgba(255,255,255,0.01), 0 20px 50px rgba(0,0,0,0.15);
+            padding: 3rem 2.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 300px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            will-change: transform;
+            transition: all 0.6s var(--transition-smooth);
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .capability-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--brand-teal-light), var(--brand-blue-light));
+            opacity: 0;
+            transition: opacity 0.6s var(--transition-smooth);
+            border-radius: var(--card-radius);
+            pointer-events: none;
+        }
+
+        .capability-card:hover::before {
+            opacity: 1;
+        }
+
+        .capability-card * {
+            transform-style: preserve-3d;
+            position: relative;
+            z-index: 1;
+        }
+
+        .capability-card:hover {
+            border-color: rgba(57, 181, 202, 0.3);
+            box-shadow: inset 0 1px 0px rgba(255,255,255,0.03), 0 30px 60px rgba(57, 181, 202, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .capability-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1.5rem;
+            color: var(--brand-teal);
+            transition: transform 0.4s var(--transition-smooth);
+        }
+
+        .capability-card:hover .capability-icon {
+            transform: scale(1.1);
+        }
+
+        .capability-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .capability-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .capability-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+            font-weight: 300;
+        }
+
+        .capability-card:hover p {
+            color: var(--text-main);
+        }
+
+        /* --- TOOLS SHOWCASE --- */
+        .tools-section {
+            padding: var(--fluid-padding) 0;
+            border-top: 1px solid var(--border-fine);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tool-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-fine);
+            border-radius: var(--card-radius);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.4s var(--transition-smooth);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .tool-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--brand-teal);
+            box-shadow: 0 10px 30px rgba(57, 181, 202, 0.05);
+        }
+
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            display: block;
+            color: var(--brand-teal);
+            transition: transform 0.4s var(--transition-smooth);
+        }
+
+        .tool-item:hover .tool-icon {
+            transform: scale(1.1);
+        }
+
+        .tool-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tool-item h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .tool-item p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-fine);
+            margin-top: 2rem;
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            font-weight: 300;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* --- RESPONSIVENESS --- */
+        @media (max-width: 1400px) {
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+                position: relative;
+                z-index: 101;
+            }
+
+            .brand-group {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .showcase-window {
+                display: none;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: clamp(2.5rem, 8vw, 3.5rem);
+            }
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            .capability-card {
+                min-height: 240px;
+                padding: 2rem 1.5rem;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .brand-group {
+                position: static;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="studio-lighting"></div>
+
+    <header>
+        <div class="container nav-container">
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a href="index.html" class="brand-group">
+                <img class="nav-logo-image" src="/ManningsMedia/images/strippedlogo.png" alt="Mannings Media Emblem">
+                <span class="logo">MANNINGS MEDIA</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <main>
+        <!-- Hero Section (Consistent with Homepage) -->
+        <section class="container hero">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <h1>Design<br>System Architecture</h1>
+                    <p>We architect comprehensive design systems that transcend traditional boundaries. Our approach combines strategic thinking with technical precision to create visual identities that are both distinctive and functional.</p>
+                    <a href="#capabilities" class="hero-cta">Explore Our Process →</a>
+                </div>
+                
+                <div class="showcase-window perspective-card">
+                    <div class="adobe-grid">
+                        <div class="adobe-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                            <span>Photoshop</span>
+                        </div>
+                        <div class="adobe-item">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="2" y="2" width="20" height="20" rx="2" ry="2"/>
+                                <circle cx="8" cy="8" r="2"/>
+                                <path d="M22 14l-4-4-4 4"/>
+                                <path d="M2 16l4-4 4 4"/>
+                            </svg>
+                            <span>Illustrator</span>
+                        </div>
+                        <div class="adobe-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 4h16v16H4z"/>
+                                <path d="M4 4l16 16"/>
+                                <path d="M20 4L4 20"/>
+                            </svg>
+                            <span>InDesign</span>
+                        </div>
+                        <div class="adobe-item">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                            <span>Adobe XD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Capabilities Section (Consistent with Pillars) -->
+        <section class="capabilities" id="capabilities">
+            <div class="container">
+                <span class="section-label">Our Design Capabilities</span>
+                <div class="capabilities-grid">
+                    
+                    <!-- Capability 1 -->
+                    <div class="capability-card perspective-card">
+                        <span class="capability-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </span>
+                        <h3>Brand Identity</h3>
+                        <p>Comprehensive brand development including logo design, color systems, typography, and visual language that communicates your brand's essence.</p>
+                    </div>
+
+                    <!-- Capability 2 -->
+                    <div class="capability-card perspective-card">
+                        <span class="capability-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </span>
+                        <h3>UI/UX Design</h3>
+                        <p>User-centric interface design with comprehensive UX research, wireframing, prototyping, and user testing for seamless digital experiences.</p>
+                    </div>
+
+                    <!-- Capability 3 -->
+                    <div class="capability-card perspective-card">
+                        <span class="capability-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </span>
+                        <h3>Design Systems</h3>
+                        <p>Scalable design systems with component libraries, pattern documentation, and governance models for consistent brand expression across all platforms.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools & Technologies Section -->
+        <section class="tools-section">
+            <div class="container">
+                <span class="section-label">Tools & Technologies</span>
+                <div class="tools-grid">
+                    <!-- Adobe Creative Suite -->
+                    <div class="tool-item">
+                        <span class="tool-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </span>
+                        <h4>Adobe Creative Suite</h4>
+                        <p>Photoshop, Illustrator, InDesign, After Effects — industry-standard tools for exceptional design execution.</p>
+                    </div>
+
+                    <!-- Sketch -->
+                    <div class="tool-item">
+                        <span class="tool-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                                <line x1="12" y1="2" x2="12" y2="22"/>
+                            </svg>
+                        </span>
+                        <h4>Sketch</h4>
+                        <p>Vector-based design and prototyping tool for creating intuitive interfaces and collaborative design workflows.</p>
+                    </div>
+
+                    <!-- Sigma -->
+                    <div class="tool-item">
+                        <span class="tool-icon">
+                            <svg viewBox="0 0 24 24">
+                                <polygon points="4 4 20 4 12 12 20 20 4 20"/>
+                                <line x1="4" y1="12" x2="20" y2="12"/>
+                            </svg>
+                        </span>
+                        <h4>Sigma</h4>
+                        <p>Data-driven design tool for creating, testing, and optimizing design systems at scale with real-time collaboration.</p>
+                    </div>
+
+                    <!-- Affinity -->
+                    <div class="tool-item">
+                        <span class="tool-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                                <path d="M12 2l10 5-10 5-10-5 10-5z"/>
+                            </svg>
+                        </span>
+                        <h4>Affinity Suite</h4>
+                        <p>Professional design software for photo editing, vector graphics, and page layout with precision and performance.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mannings Media. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Hamburger Menu Toggle ---
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // --- Enhanced 3D Tilt Effect ---
+        const cardElements = document.querySelectorAll('.perspective-card');
+        const cardsData = Array.from(cardElements).map(card => ({
+            el: card, targetRotX: 0, targetRotY: 0, targetY: 0, currRotX: 0, currRotY: 0, currY: 0
+        }));
+
+        cardsData.forEach((cardData) => {
+            cardData.el.addEventListener('mousemove', (e) => {
+                let rect = cardData.el.getBoundingClientRect();
+                let x = e.clientX - rect.left; 
+                let y = e.clientY - rect.top; 
+                let centerX = rect.width / 2;
+                let centerY = rect.height / 2;
+                
+                cardData.targetRotX = (centerY - y) * 0.05; 
+                cardData.targetRotY = (x - centerX) * 0.05;
+                cardData.targetY = -6;
+            });
+
+            cardData.el.addEventListener('mouseleave', () => {
+                cardData.targetRotX = 0; cardData.targetRotY = 0; cardData.targetY = 0;
+            });
+        });
+
+        const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
+
+        function performRenderLoop() {
+            cardsData.forEach(card => {
+                card.currRotX = lerp(card.currRotX, card.targetRotX, 0.08);
+                card.currRotY = lerp(card.currRotY, card.targetRotY, 0.08);
+                card.currY = lerp(card.currY, card.targetY, 0.08);
+                card.el.style.transform = `perspective(1000px) rotateX(${card.currRotX}deg) rotateY(${card.currRotY}deg) translateY(${card.currY}px)`;
+            });
+            requestAnimationFrame(performRenderLoop);
+        }
+        requestAnimationFrame(performRenderLoop);
+
+        // --- Scroll effect for header ---
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Update active state based on current page ---
+        const currentPage = window.location.pathname.split('/').pop() || 'design.html';
+        document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
+            const linkHref = link.getAttribute('href').split('/').pop();
+            if (linkHref === currentPage || (linkHref === 'design.html' && currentPage === 'design.html')) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // --- Smooth scroll for anchor links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
