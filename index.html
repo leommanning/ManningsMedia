@@ -12,40 +12,53 @@
             padding: 0;
         }
 
+        /* Import modern font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+
         :root {
-            --bg-base: #141416;
+            --bg-base: #0a0a0c;
             --surface-color: rgba(255, 255, 255, 0.015);
             --text-main: #F4F4F6;
             --text-muted: #8E8E93;
             --border-fine: rgba(255, 255, 255, 0.04);
             --fluid-padding: clamp(2.5rem, 6vw, 8rem);
             
-            /* Sampleed Colors from strippedlogo.png */
-            --brand-teal: #39b5ca;       /* Radiant top-left of logo */
-            --brand-blue: #16648b;       /* Deep oceanic bottom-right of logo */
+            /* Sampled Colors from strippedlogo.png */
+            --brand-teal: #39b5ca;
+            --brand-blue: #16648b;
+            --brand-teal-light: rgba(57, 181, 202, 0.1);
+            --brand-blue-light: rgba(22, 100, 139, 0.1);
+            
+            /* New design tokens */
+            --card-radius: 12px;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         }
 
         html {
             scroll-behavior: smooth;
             background-color: var(--bg-base);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-family: var(--font-primary);
             -webkit-font-smoothing: antialiased;
         }
 
         body {
             overflow-x: hidden;
             position: relative;
+            line-height: 1.6;
         }
 
-        /* Ambient Fluid Lighting directly using brand nodes */
+        /* Enhanced Ambient Fluid Lighting */
         .studio-lighting {
             position: fixed;
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background: radial-gradient(circle at 80% 20%, rgba(57, 181, 202, 0.03) 0%, transparent 50%),
-                        radial-gradient(circle at 20% 80%, rgba(22, 100, 139, 0.04) 0%, transparent 60%);
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(57, 181, 202, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(22, 100, 139, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(20, 20, 22, 0.9) 0%, rgba(10, 10, 12, 1) 100%);
         }
 
         .container {
@@ -64,62 +77,209 @@
             left: 0;
             width: 100%;
             z-index: 100;
-            background: rgba(20, 20, 22, 0.8);
+            background: rgba(10, 10, 12, 0.85);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border-fine);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
+
+        header.scrolled {
+            background: rgba(10, 10, 12, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 95px;
+            height: 85px;
+            position: relative;
         }
+
+        /* Logo - Centered on mobile */
         .brand-group {
             display: flex;
             align-items: center;
             gap: 16px;
             text-decoration: none;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @media (min-width: 769px) {
+            .brand-group {
+                position: static;
+                transform: none;
+            }
+        }
+
+        .brand-group:hover {
+            opacity: 0.85;
         }
         .nav-logo-image {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
             opacity: 0.9;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.4s var(--transition-smooth);
         }
         .brand-group:hover .nav-logo-image {
-            transform: rotate(5deg) scale(1.08);
+            transform: scale(1.05);
         }
         .logo {
-            font-weight: 900;
-            font-size: 1.15rem;
-            letter-spacing: 0.28em;
-            color: var(--text-main);
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
+            background: linear-gradient(135deg, #fff 0%, var(--brand-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
+        /* Navigation Links */
         .nav-links {
             display: flex;
-            gap: 4rem;
+            gap: 3rem;
             list-style: none;
+            margin-left: auto;
         }
+
         .nav-links a {
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--text-muted);
-            font-weight: 700;
+            font-weight: 600;
             text-decoration: none;
-            transition: color 0.4s;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+
+        /* Curly brace indicators for active/selected state */
+        .nav-links a.active {
+            color: var(--brand-teal);
+        }
+
+        .nav-links a.active::before {
+            content: '{ ';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        .nav-links a.active::after {
+            content: ' }';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        .nav-links a:not(.active)::before,
+        .nav-links a:not(.active)::after {
+            content: '';
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            z-index: 101;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--text-main);
+            transition: all 0.3s var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 10, 12, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 99;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            opacity: 0;
+            transition: opacity 0.4s var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu a {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--text-main);
+        }
+
+        .mobile-menu a.active {
+            color: var(--brand-teal);
+        }
+
+        .mobile-menu a.active::before {
+            content: '{ ';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
+
+        .mobile-menu a.active::after {
+            content: ' }';
+            color: var(--brand-teal);
+            opacity: 0.8;
+        }
 
         /* --- HERO AREA WITH BRAND GRADIENT SHIMMER --- */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding-top: 95px;
+            padding-top: 85px;
             position: relative;
         }
         .hero-grid {
@@ -131,12 +291,12 @@
         }
         
         .hero-text h1 {
-            font-size: clamp(3.2rem, 6.2vw, 5.8rem);
-            font-weight: 900;
-            line-height: 0.95;
-            letter-spacing: -0.035em;
+            font-size: clamp(3.5rem, 6.5vw, 6rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
             text-transform: uppercase;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             
             background: linear-gradient(135deg, #FFFFFF 15%, var(--brand-teal) 55%, var(--brand-blue) 100%);
             background-size: 200% auto;
@@ -150,9 +310,36 @@
         
         .hero-text p {
             font-size: clamp(1.15rem, 1.6vw, 1.45rem);
-            line-height: 1.65;
+            line-height: 1.8;
             color: var(--text-muted);
-            max-width: 650px;
+            max-width: 600px;
+            font-weight: 300;
+            letter-spacing: 0.01em;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-family: var(--font-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(57, 181, 202, 0.3);
         }
         
         .showcase-window {
@@ -174,7 +361,7 @@
             transform: scale(1);
             opacity: 0.95;
             filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            transition: all 1.2s var(--transition-smooth);
         }
         .showcase-window:hover img {
             transform: scale(1.05) translateZ(25px);
@@ -182,25 +369,54 @@
             filter: drop-shadow(0 30px 60px rgba(57, 181, 202, 0.15));
         }
 
-        /* --- 4 INTERACTIVE MOVING PILLARS WITH BRAND HOVER MATCH --- */
+        /* Glowing ring around the logo */
+        .showcase-window::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(57, 181, 202, 0.1) 0%, transparent 70%);
+            animation: pulseGlow 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* --- 5 INTERACTIVE CLICKABLE PILLARS --- */
         .pillars {
             padding: var(--fluid-padding) 0;
             border-top: 1px solid var(--border-fine);
             position: relative;
         }
         .section-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             letter-spacing: 0.35em;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 4.5rem;
+            margin-bottom: 3.5rem;
             display: block;
-            font-weight: 700;
+            font-weight: 600;
+            position: relative;
+            padding-left: 2rem;
+        }
+        .section-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.5rem;
+            height: 2px;
+            background: var(--brand-teal);
         }
         .pillars-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.8rem;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
             perspective: 1200px;
         }
         
@@ -208,80 +424,265 @@
             position: relative;
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid var(--border-fine);
+            border-radius: var(--card-radius);
             box-shadow: inset 0 1px 0px rgba(255,255,255,0.01), 0 20px 50px rgba(0,0,0,0.15);
-            padding: 5rem 2.8rem;
+            padding: 3rem 2.5rem 2.5rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 400px;
+            align-items: center;
+            text-align: center;
+            min-height: 340px;
             transform-style: preserve-3d;
             perspective: 1000px;
-            border-radius: 4px;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             will-change: transform;
-            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s var(--transition-smooth);
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
-        .pillar-card * { transform-style: preserve-3d; }
+
+        /* Subtle gradient overlay on hover */
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--brand-teal-light), var(--brand-blue-light));
+            opacity: 0;
+            transition: opacity 0.6s var(--transition-smooth);
+            border-radius: var(--card-radius);
+            pointer-events: none;
+        }
+
+        .pillar-card:hover::before {
+            opacity: 1;
+        }
+
+        .pillar-card * { 
+            transform-style: preserve-3d;
+            position: relative;
+            z-index: 1;
+        }
         
-        /* Interactive border catches a subtle hint of the logo's teal on interaction */
         .pillar-card:hover {
-            background: rgba(255, 255, 255, 0.015);
             border-color: rgba(57, 181, 202, 0.3);
-            box-shadow: inset 0 1px 0px rgba(255,255,255,0.03), 0 30px 60px rgba(57, 181, 202, 0.03);
+            box-shadow: inset 0 1px 0px rgba(255,255,255,0.03), 0 30px 60px rgba(57, 181, 202, 0.08);
+            transform: translateY(-4px) !important;
+        }
+
+        /* Arrow indicator for clickable cards */
+        .pillar-card::after {
+            content: '→';
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--brand-teal);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.4s var(--transition-smooth);
+            z-index: 2;
+        }
+
+        .pillar-card:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .pillar-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            min-height: 120px;
+            justify-content: center;
+        }
+
+        .pillar-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1.5rem;
+            transform: translateZ(25px);
+            display: block;
+            color: var(--brand-teal);
+            transition: transform 0.4s var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        .pillar-card:hover .pillar-icon {
+            transform: translateZ(25px) scale(1.05);
+        }
+
+        .pillar-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .pillar-num {
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-family: 'Inter', monospace;
+            font-size: 0.65rem;
+            color: var(--brand-teal);
             font-weight: 600;
             transform: translateZ(15px);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            opacity: 0.7;
+            text-align: center;
+            height: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .pillar-card h3 {
-            font-size: 2rem;
-            font-weight: 400;
+            font-size: 1.6rem;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 1.25rem;
-            letter-spacing: -0.015em;
+            letter-spacing: -0.02em;
             color: var(--text-main);
             transform: translateZ(30px);
+            line-height: 1.2;
+            text-align: center;
+            height: 3.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .pillar-card p {
-            font-size: 0.98rem;
-            line-height: 1.65;
+            font-size: 0.9rem;
+            line-height: 1.7;
             color: var(--text-muted);
             transform: translateZ(20px);
-            transition: color 0.4s;
+            transition: color 0.4s ease;
+            font-weight: 300;
+            margin-top: auto;
+            text-align: center;
+            max-width: 100%;
         }
-        .pillar-card:hover p { color: var(--text-main); }
+
+        .pillar-card:hover p { 
+            color: var(--text-main); 
+        }
 
         /* --- FOOTER --- */
         footer {
             padding: 4rem 0;
             border-top: 1px solid var(--border-fine);
+            margin-top: 2rem;
         }
         .footer-bottom {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-size: 0.75rem;
             color: var(--text-muted);
             letter-spacing: 0.05em;
+            font-weight: 300;
         }
 
-        @media (max-width: 1250px) {
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* --- RESPONSIVENESS --- */
+        @media (max-width: 1400px) {
+            .pillars-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            /* Hide desktop nav */
+            .nav-links {
+                display: none;
+            }
+
+            /* Show hamburger */
+            .hamburger {
+                display: flex;
+                position: relative;
+                z-index: 101;
+            }
+
+            /* Center logo */
+            .brand-group {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
             .pillars-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 950px) {
-            .hero-grid { grid-template-columns: 1fr; }
+            
+            .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
             .showcase-window { display: none; }
-            .pillar-card { transform: none !important; }
+            .pillar-card { transform: none !important; min-height: 280px; }
+            .pillar-card h3 {
+                height: 3.2rem;
+                font-size: 1.4rem;
+            }
+            .pillar-top {
+                min-height: 100px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
         }
-        @media (max-width: 650px) {
-            .nav-links { display: none; }
+
+        @media (max-width: 480px) {
             .pillars-grid { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+            .pillar-card { min-height: 240px; padding: 2rem 1.5rem; }
+            .pillar-icon {
+                width: 40px;
+                height: 40px;
+            }
+            .pillar-card h3 {
+                height: 2.8rem;
+                font-size: 1.3rem;
+            }
+            .pillar-top {
+                min-height: 90px;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .pillar-card::after {
+                bottom: 1rem;
+                right: 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .brand-group {
+                position: static;
+                transform: none;
+            }
         }
     </style>
 </head>
@@ -291,17 +692,34 @@
 
     <header>
         <div class="container nav-container">
-            <a href="#" class="brand-group">
+            <!-- Hamburger Menu Button -->
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Logo - Centered -->
+            <a href="index.html" class="brand-group">
                 <img class="nav-logo-image" src="/ManningsMedia/images/strippedlogo.png" alt="Mannings Media Emblem">
                 <span class="logo">MANNINGS MEDIA</span>
             </a>
+
+            <!-- Desktop Navigation -->
             <ul class="nav-links">
-                <li><a href="#work">Work</a></li>
-                <li><a href="#services" class="active">Services</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#services">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="active">Home</a>
+        <a href="#services">Services</a>
+        <a href="contact.html">Contact</a>
+    </div>
 
     <main>
         <section class="container hero">
@@ -309,10 +727,10 @@
                 <div class="hero-text">
                     <h1>Pixels & Paper.<br>Unified Vision.</h1>
                     <p>We are a high-discipline creative studio eliminating friction for progressive brands. By cross-pollinating strategy, web development, print craft, and photography, we protect creative integrity from inception to real-world presence.</p>
+                    <a href="#services" class="hero-cta">Explore Our Services →</a>
                 </div>
                 
                 <div class="showcase-window perspective-card">
-                    <!-- Referencing verbatim strippedlogo.png asset window -->
                     <img src="/ManningsMedia/images/strippedlogo.png" alt="Mannings Media Logo">
                 </div>
             </div>
@@ -323,41 +741,92 @@
                 <span class="section-label">Capabilities & Infrastructure</span>
                 <div class="pillars-grid">
                     
-                    <!-- Pillar 01 -->
-                    <div class="pillar-card perspective-card">
-                        <span class="pillar-num">// 01 Visual Identity</span>
-                        <div>
+                    <!-- Pillar 01 - Design -->
+                    <a href="/design.html" class="pillar-card perspective-card">
+                        <div class="pillar-top">
+                            <span class="pillar-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                    <path d="M2 12l10 5 10-5"/>
+                                </svg>
+                            </span>
+                            <span class="pillar-num">// 01</span>
                             <h3>Design</h3>
-                            <p>Bespoke system architecture, UI engineering matrices, and continuous brand layout design blueprints built to scale.</p>
                         </div>
-                    </div>
+                        <p>Bespoke system architecture, UI engineering matrices, and continuous brand layout design blueprints built to scale.</p>
+                    </a>
 
-                    <!-- Pillar 02 -->
-                    <div class="pillar-card perspective-card">
-                        <span class="pillar-num">// 02 Physical Form</span>
-                        <div>
+                    <!-- Pillar 02 - Print -->
+                    <a href="/print.html" class="pillar-card perspective-card">
+                        <div class="pillar-top">
+                            <span class="pillar-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="6 9 6 2 18 2 18 9"/>
+                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                                    <rect x="6" y="14" width="12" height="8"/>
+                                    <line x1="18" y1="5" x2="18" y2="5.01"/>
+                                    <line x1="6" y1="5" x2="6" y2="5.01"/>
+                                </svg>
+                            </span>
+                            <span class="pillar-num">// 02</span>
                             <h3>Print</h3>
-                            <p>Premium execution across material mediums, tangible dimensional assets, and high-spec production control.</p>
                         </div>
-                    </div>
+                        <p>Premium execution across material mediums, tangible dimensional assets, and high-spec production control.</p>
+                    </a>
 
-                    <!-- Pillar 03 -->
-                    <div class="pillar-card perspective-card">
-                        <span class="pillar-num">// 03 Interactive Platforms</span>
-                        <div>
+                    <!-- Pillar 03 - Web -->
+                    <a href="/web.html" class="pillar-card perspective-card">
+                        <div class="pillar-top">
+                            <span class="pillar-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                </svg>
+                            </span>
+                            <span class="pillar-num">// 03</span>
                             <h3>Web</h3>
-                            <p>High-efficiency frontend ecosystems, custom functional script designs, and completely fluid interface deployment.</p>
                         </div>
-                    </div>
+                        <p>High-efficiency frontend ecosystems, custom functional script designs, and completely fluid interface deployment.</p>
+                    </a>
 
-                    <!-- Pillar 04 -->
-                    <div class="pillar-card perspective-card">
-                        <span class="pillar-num">// 04 Authentic Narrative</span>
-                        <div>
+                    <!-- Pillar 04 - Photography -->
+                    <a href="/photography.html" class="pillar-card perspective-card">
+                        <div class="pillar-top">
+                            <span class="pillar-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="6" width="18" height="14" rx="2" ry="2"/>
+                                    <circle cx="12" cy="13" r="4"/>
+                                    <line x1="8" y1="2" x2="16" y2="2"/>
+                                    <line x1="6" y1="6" x2="6" y2="4"/>
+                                    <line x1="18" y1="6" x2="18" y2="4"/>
+                                </svg>
+                            </span>
+                            <span class="pillar-num">// 04</span>
                             <h3>Photography</h3>
-                            <p>Cinematic production capture, architectural spatial documentation, and high-fidelity product asset archives.</p>
                         </div>
-                    </div>
+                        <p>Cinematic production capture, architectural spatial documentation, and high-fidelity product asset archives.</p>
+                    </a>
+
+                    <!-- Pillar 05 - Videography -->
+                    <a href="/videography.html" class="pillar-card perspective-card">
+                        <div class="pillar-top">
+                            <span class="pillar-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="2" y="4" width="16" height="16" rx="2" ry="2"/>
+                                    <polygon points="22 6 18 8 18 16 22 18 22 6"/>
+                                    <line x1="8" y1="4" x2="8" y2="20"/>
+                                    <line x1="12" y1="4" x2="12" y2="20"/>
+                                    <line x1="2" y1="8" x2="6" y2="8"/>
+                                    <line x1="2" y1="16" x2="6" y2="16"/>
+                                </svg>
+                            </span>
+                            <span class="pillar-num">// 05</span>
+                            <h3>Videography</h3>
+                        </div>
+                        <p>Dynamic visual storytelling, cinematic brand narratives, motion graphics, and high-production value video content for digital and broadcast platforms.</p>
+                    </a>
 
                 </div>
             </div>
@@ -368,12 +837,36 @@
         <div class="container">
             <div class="footer-bottom">
                 <p>&copy; 2026 Mannings Media. All rights reserved.</p>
-                <p>Designed for Clarity.</p>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
             </div>
         </div>
     </footer>
 
     <script>
+        // --- Hamburger Menu Toggle ---
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // --- Enhanced 3D Tilt Effect ---
         const cardElements = document.querySelectorAll('.perspective-card');
         const cardsData = Array.from(cardElements).map(card => ({
             el: card, targetRotX: 0, targetRotY: 0, targetY: 0, currRotX: 0, currRotY: 0, currY: 0
@@ -409,6 +902,47 @@
             requestAnimationFrame(performRenderLoop);
         }
         requestAnimationFrame(performRenderLoop);
+
+        // --- Scroll effect for header ---
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Smooth scroll for navigation links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('open')) {
+                        hamburger.classList.remove('active');
+                        mobileMenu.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+        });
+
+        // --- Update active state based on current page ---
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
+            const linkHref = link.getAttribute('href').split('/').pop();
+            if (linkHref === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
