@@ -9,6 +9,27 @@
     "photographer": "Leom Manning",
     "coverImage": "IMG_6945-Edit.jpg"
   },
+  "gallery": {
+    "images": [
+      “IMG_6945-Edit.jpg”
+      “IMG_6948-Edit.jpg”
+      “IMG_6952.jpg”
+      “IMG_6953.jpg”
+      “IMG_6957-Edit.jpg”
+      “IMG_6962-Edit.jpg”
+      “IMG_6975-Edit.jpg”
+      “IMG_6982.jpg”
+      “IMG_6983.jpg”
+      “IMG_6987.jpg”
+      “IMG_6997.jpg”
+      “IMG_7000.jpg”
+      “IMG_7005.jpg”
+      “IMG_7011-Edit.jpg”
+      “IMG_7017-Edit.jpg”
+      “IMG_7025.jpg”
+      “IMG_7027.jpg”
+    ]
+  },
   "download": {
     "enabled": true,
     "zipName": "Hannah-Danny-Wedding-Photos"
