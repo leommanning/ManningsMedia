@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Mannings Media - Client Portal. Access your wedding gallery, project files, and deliverables securely.">
+  <meta name="theme-color" content="#206a9c">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <title>Client Portal | Mannings Media</title>
+
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+</head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <div class="preloader-logo">
+        <img src="assets/images/logo.png" alt="Mannings Media">
+      </div>
+      <div class="preloader-bar">
+        <span class="preloader-progress"></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html" class="logo" aria-label="Mannings Media Home">
+              <img src="assets/images/logo.png" alt="Mannings Media Logo">
+            </a>
+            <ul class="nav" role="menubar">
+              <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+              <li role="none"><a href="ourwork.html" role="menuitem">Our Work</a></li>
+              <li role="none"><a href="services.html" role="menuitem">Services</a></li>
+              <li role="none"><a href="projects.html" role="menuitem">Projects</a></li>
+              <li role="none"><a href="about.html" role="menuitem">About</a></li>
+              <li role="none" class="nav-account"><a href="client.html" class="active" role="menuitem" aria-label="Client Portal"><i class="fa fa-user-circle"></i></a></li>
+            </ul>
+            <button class="menu-trigger" aria-label="Toggle menu" aria-expanded="false">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <!-- ***** Page Header Start ***** -->
+  <section class="page-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="section-badge">Client Area</span>
+          <h1>Client <span class="gradient-text">Portal</span></h1>
+          <p>Access your wedding gallery, project files, and deliverables securely.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ***** Page Header End ***** -->
+
+  <!-- ***** Login Section Start ***** -->
+  <section class="login-section" id="login-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5">
+          <div class="login-card">
+            <div class="login-header">
+              <div class="login-icon-wrapper">
+                <i class="fa fa-lock"></i>
+              </div>
+              <h2>Access Your Files</h2>
+              <p>Enter the access code and password provided to you via email.</p>
+            </div>
+            <form class="login-form" id="login-form" autocomplete="off">
+              <div class="form-group">
+                <label>Access Code</label>
+                <div class="input-icon-wrapper">
+                  <i class="fa fa-key"></i>
+                  <input type="text" class="form-control" id="access-code" placeholder="e.g. HANDD2026" required autocomplete="off" autocapitalize="characters">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <div class="input-icon-wrapper">
+                  <i class="fa fa-shield"></i>
+                  <input type="password" class="form-control" id="client-password" placeholder="••••••••" required autocomplete="off">
+                </div>
+              </div>
+              <div class="form-options">
+                <label class="remember-me">
+                  <input type="checkbox" id="remember-me"> Remember me on this device
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+                <span class="btn-text">Access My Files</span>
+                <span class="btn-loader" style="display: none;"><i class="fa fa-spinner fa-spin"></i> Verifying...</span>
+                <span class="btn-success" style="display: none;"><i class="fa fa-check"></i> Access Granted!</span>
+              </button>
+            </form>
+            <div class="login-footer">
+              <p>Don't have an access code? <a href="getstarted.html">Start a project</a></p>
+              <p class="login-help">Having trouble? <a href="about.html#contact">Contact us</a> for assistance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ***** Login Section End ***** -->
+
+  <!-- ***** Info Section Start ***** -->
+  <section class="portal-info-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-header">
+            <span class="section-badge">How It Works</span>
+            <h2>Accessing Your <span class="gradient-text">Deliverables</span></h2>
+            <p>Simple and secure access to all your project files.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <div class="portal-info-card">
+            <div class="portal-step-number">01</div>
+            <div class="portal-info-icon">
+              <i class="fa fa-envelope"></i>
+            </div>
+            <h3>Receive Your Code</h3>
+            <p>After your project is complete, we'll email you a unique access code and password to access your deliverables.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="portal-info-card">
+            <div class="portal-step-number">02</div>
+            <div class="portal-info-icon">
+              <i class="fa fa-sign-in"></i>
+            </div>
+            <h3>Login Securely</h3>
+            <p>Enter your code and password above to access your personalised client gallery and file downloads.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="portal-info-card">
+            <div class="portal-step-number">03</div>
+            <div class="portal-info-icon">
+              <i class="fa fa-download"></i>
+            </div>
+            <h3>Download Your Files</h3>
+            <p>View your beautiful wedding gallery, stream videos, or download all files with a single click.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ***** Info Section End ***** -->
+
+  <!-- ***** Footer Start ***** -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5">
+          <div class="footer-brand">
+            <img src="assets/images/logo.png" alt="Mannings Media Logo" class="footer-logo">
+            <p>We're a full-service creative agency specializing in photography, videography, branding, and digital marketing.</p>
+            <div class="footer-social">
+              <a href="#" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="fa fa-linkedin"></i></a>
+              <a href="#" aria-label="YouTube"><i class="fa fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4">
+          <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="ourwork.html">Our Work</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="projects.html">Projects</a></li>
+              <li><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4">
+          <div class="footer-links">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#">Photography</a></li>
+              <li><a href="#">Videography</a></li>
+              <li><a href="#">Web Design</a></li>
+              <li><a href="#">Graphic Design</a></li>
+              <li><a href="#">Print</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4">
+          <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <ul>
+              <li><i class="fa fa-map-marker"></i> 123 Creative Street, London, UK</li>
+              <li><i class="fa fa-phone"></i> +44 123 456 7890</li>
+              <li><i class="fa fa-envelope"></i> hello@manningsmedia.com</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> Mannings Media. All rights reserved.</p>
+            <div class="footer-bottom-links">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- ***** Footer End ***** -->
+
+  <!-- Scripts -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/tabs.js"></script>
+  <script src="assets/js/popup.js"></script>
+  <script src="assets/js/custom.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Set year
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+      
+      // Mobile menu
+      const menuTrigger = document.querySelector('.menu-trigger');
+      const nav = document.querySelector('.main-nav .nav');
+      if (menuTrigger) {
+        menuTrigger.addEventListener('click', function() {
+          this.classList.toggle('active');
+          nav.classList.toggle('active');
+        });
+      }
+      
+      // Sticky header
+      window.addEventListener('scroll', function() {
+        document.querySelector('.header-area').classList.toggle('header-sticky', window.scrollY > 100);
+      });
+
+      // ============================================
+      // CLIENT DATABASE
+      // Add new clients here
+      // ============================================
+      const clients = [
+        {
+          slug: "hannah-danny",
+          accessCode: "HANDD2026",
+          password: "HannahDanny2026",
+          name: "Hannah & Danny"
+        }
+      ];
+
+      // ============================================
+      // LOGIN HANDLER
+      // ============================================
+      const loginForm = document.getElementById('login-form');
+      
+      // Check for remembered client
+      const remembered = localStorage.getItem('mm_client_code');
+      if (remembered) {
+        document.getElementById('access-code').value = remembered;
+        document.getElementById('remember-me').checked = true;
+      }
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const accessCode = document.getElementById('access-code').value.trim().toUpperCase();
+        const password = document.getElementById('client-password').value.trim();
+        const rememberMe = document.getElementById('remember-me').checked;
+        
+        const btn = document.getElementById('login-btn');
+        const btnText = btn.querySelector('.btn-text');
+        const btnLoader = btn.querySelector('.btn-loader');
+        const btnSuccess = btn.querySelector('.btn-success');
+        
+        // Remove old errors
+        const oldError = document.querySelector('.login-error');
+        if (oldError) oldError.remove();
+        
+        // Reset field highlights
+        document.getElementById('access-code').style.borderColor = '';
+        document.getElementById('client-password').style.borderColor = '';
+        
+        // Validate empty fields
+        if (!accessCode) {
+          showError('Please enter your access code.');
+          document.getElementById('access-code').style.borderColor = '#ff4757';
+          document.getElementById('access-code').focus();
+          return;
+        }
+        if (!password) {
+          showError('Please enter your password.');
+          document.getElementById('client-password').style.borderColor = '#ff4757';
+          document.getElementById('client-password').focus();
+          return;
+        }
+        
+        // Loading state
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline';
+        btn.disabled = true;
+        
+        // Find client
+        const client = clients.find(function(c) {
+          return c.accessCode.toUpperCase() === accessCode;
+        });
+        
+        // Verify
+        if (!client) {
+          showError('Invalid access code. Please check and try again.');
+          document.getElementById('access-code').style.borderColor = '#ff4757';
+          document.getElementById('access-code').focus();
+          resetBtn();
+          return;
+        }
+        
+        if (client.password !== password) {
+          showError('Incorrect password. Please try again.');
+          document.getElementById('client-password').style.borderColor = '#ff4757';
+          document.getElementById('client-password').focus();
+          resetBtn();
+          return;
+        }
+        
+        // Success!
+        btnLoader.style.display = 'none';
+        btnSuccess.style.display = 'inline';
+        
+        // Remember client
+        if (rememberMe) {
+          localStorage.setItem('mm_client_code', accessCode);
+        } else {
+          localStorage.removeItem('mm_client_code');
+        }
+        
+        // Redirect to gallery
+        setTimeout(function() {
+          window.location.href = 'client-gallery.html?client=' + client.slug;
+        }, 600);
+        
+      });
+      
+      // Show error message
+      function showError(msg) {
+        const old = document.querySelector('.login-error');
+        if (old) old.remove();
+        
+        const div = document.createElement('div');
+        div.className = 'login-error';
+        div.innerHTML = '<i class="fa fa-exclamation-circle"></i> ' + msg;
+        loginForm.insertBefore(div, document.getElementById('login-btn'));
+      }
+      
+      // Reset button
+      function resetBtn() {
+        const btn = document.getElementById('login-btn');
+        btn.querySelector('.btn-loader').style.display = 'none';
+        btn.querySelector('.btn-text').style.display = 'inline';
+        btn.disabled = false;
+      }
+      
+      // Preloader
+      setTimeout(function() {
+        document.getElementById('js-preloader').classList.add('loaded');
+      }, 500);
+      
+    });
+  </script>
+
+</body>
+
+</html>
