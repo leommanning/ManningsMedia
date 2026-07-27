@@ -1,0 +1,93 @@
+<!-- templates/deliverables.html -->
+<section class="deliverables-hero">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="section-badge" id="deliverable-type"></span>
+        <h1 id="deliverable-name"></h1>
+        <p id="deliverable-description"></p>
+        <div class="deliverable-meta">
+          <span><i class="fa fa-calendar"></i> <span id="deliverable-date"></span></span>
+          <span><i class="fa fa-user"></i> <span id="deliverable-creator"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="deliverables-files">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="files-card">
+          <div class="files-header">
+            <h3><i class="fa fa-folder-open"></i> Your Files</h3>
+            <button class="btn btn-primary btn-sm" id="download-all-files">
+              <i class="fa fa-download"></i> Download All
+            </button>
+          </div>
+          <div class="files-list" id="files-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initTemplate(config, slug) {
+    document.getElementById('deliverable-type').textContent = config.client.type;
+    document.getElementById('deliverable-name').textContent = config.client.name;
+    document.getElementById('deliverable-description').textContent = config.client.description;
+    document.getElementById('deliverable-date').textContent = config.client.date;
+    document.getElementById('deliverable-creator').textContent = config.client.director || config.client.designer || 'Mannings Media Team';
+    
+    const filesList = document.getElementById('files-list');
+    const files = config.files || config.videos || [];
+    
+    files.forEach((file, index) => {
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      const ext = file.file.split('.').pop().toUpperCase();
+      const icon = ext === 'MP4' ? 'fa-file-video-o' : 
+                   ext === 'PDF' ? 'fa-file-pdf-o' : 
+                   ext === 'AI' || ext === 'PSD' ? 'fa-file-image-o' : 'fa-file';
+      
+      fileItem.innerHTML = `
+        <div class="file-icon"><i class="fa ${icon}"></i></div>
+        <div class="file-info">
+          <h4>${file.title || file.file}</h4>
+          <span>${file.size || ''} ${file.duration || ''} • ${ext}</span>
+        </div>
+        <a href="clients/${slug}/${file.file}" class="btn btn-sm btn-outline" download>
+          <i class="fa fa-download"></i> Download
+        </a>
+      `;
+      filesList.appendChild(fileItem);
+    });
+    
+    // Download all as ZIP
+    document.getElementById('download-all-files').addEventListener('click', async function() {
+      const btn = this;
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Zipping...';
+      btn.disabled = true;
+      
+      const zip = new JSZip();
+      for (const file of files) {
+        try {
+          const response = await fetch(`clients/${slug}/${file.file}`);
+          const blob = await response.blob();
+          zip.file(file.file.split('/').pop(), blob);
+        } catch(e) {}
+      }
+      
+      const content = await zip.generateAsync({ type: 'blob' });
+      saveAs(content, `${slug}-deliverables.zip`);
+      
+      btn.innerHTML = '<i class="fa fa-check"></i> Done!';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa fa-download"></i> Download All';
+        btn.disabled = false;
+      }, 3000);
+    });
+  }
+</script>

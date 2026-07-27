@@ -1,0 +1,34 @@
+{
+  "template": "deliverables",
+  "client": {
+    "name": "TechStart Inc.",
+    "type": "TV Commercial",
+    "date": "22nd June 2026",
+    "description": "30-second TV commercial for product launch.",
+    "director": "Sarah Chen",
+    "coverImage": "deliverables/thumbnail.jpg"
+  },
+  "files": [
+    {
+      "title": "Final Edit - 30s",
+      "file": "deliverables/commercial-v1.mp4",
+      "duration": "0:30",
+      "size": "245 MB"
+    },
+    {
+      "title": "Social Media Cut - 15s",
+      "file": "deliverables/commercial-social.mp4",
+      "duration": "0:15",
+      "size": "120 MB"
+    }
+  ],
+  "download": {
+    "enabled": true,
+    "zipName": "TechStart-TV-Commercial"
+  },
+  "access": {
+    "code": "TECH2026",
+    "password": "techstart2026",
+    "expires": "2026-12-31"
+  }
+}

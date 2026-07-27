@@ -1,0 +1,155 @@
+<!-- templates/wedding.html -->
+<section class="wedding-hero" id="wedding-hero">
+  <div class="wedding-hero-image">
+    <img id="wedding-cover" src="" alt="">
+    <div class="wedding-hero-overlay"></div>
+    <div class="wedding-hero-content">
+      <span class="wedding-badge"><i class="fa fa-heart"></i> Wedding Photography</span>
+      <h1 id="wedding-names"></h1>
+      <p id="wedding-description"></p>
+      <div class="wedding-meta">
+        <span><i class="fa fa-calendar"></i> <span id="wedding-date"></span></span>
+        <span><i class="fa fa-map-marker"></i> <span id="wedding-location"></span></span>
+        <span><i class="fa fa-camera"></i> <span id="wedding-photographer"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wedding-gallery">
+  <div class="container">
+    <div class="gallery-intro text-center">
+      <span class="section-badge">Our Story</span>
+      <h2>A Day to <span class="gradient-text">Remember</span></h2>
+      <p>Every precious moment captured forever</p>
+    </div>
+    <div class="gallery-controls">
+      <button class="view-btn active" data-view="grid"><i class="fa fa-th"></i></button>
+      <button class="view-btn" data-view="masonry"><i class="fa fa-th-large"></i></button>
+      <span class="photo-count" id="photo-count"></span>
+    </div>
+    <div class="row gallery-grid" id="wedding-gallery"></div>
+    <div class="text-center mt-5">
+      <button class="btn btn-primary btn-lg" id="download-all">
+        <i class="fa fa-download"></i> Download All Photos
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initTemplate(config, slug) {
+    // Set hero content
+    document.getElementById('wedding-names').textContent = config.client.name;
+    document.getElementById('wedding-description').textContent = config.client.description;
+    document.getElementById('wedding-date').textContent = config.client.date;
+    document.getElementById('wedding-location').textContent = config.client.location;
+    document.getElementById('wedding-photographer').textContent = config.client.photographer;
+    document.getElementById('wedding-cover').src = `clients/${slug}/${config.client.coverImage}`;
+    
+    // Build gallery
+    const gallery = document.getElementById('wedding-gallery');
+    const images = [];
+    const { folder, prefix, extension, count } = config.gallery;
+    
+    // Generate image paths based on config
+    for (let i = 1; i <= count; i++) {
+      // Support different numbering formats
+      const num3 = String(i).padStart(3, '0');
+      const num4 = String(i).padStart(4, '0');
+      const num = String(i);
+      
+      // Try different naming patterns
+      const possibleNames = [
+        `${folder}${prefix}${num4}.${extension}`,
+        `${folder}${prefix}${num3}.${extension}`,
+        `${folder}${prefix}${num}.${extension}`,
+        `${folder}${prefix}${num3}.${extension.toUpperCase()}`,
+        `${folder}${prefix}${num3}.${extension.toLowerCase()}`
+      ];
+      
+      // Use the first naming pattern (will show broken images if wrong)
+      // Client can fix by updating config prefix
+      const src = possibleNames[0];
+      images.push(src);
+      
+      const col = document.createElement('div');
+      col.className = 'col-lg-3 col-md-4 col-sm-6 gallery-item';
+      col.innerHTML = `
+        <div class="wedding-photo-card">
+          <a href="${src}" data-lightbox="wedding" data-title="Photo ${i}">
+            <img src="${src}" alt="Photo ${i}" loading="lazy" onerror="this.parentElement.parentElement.parentElement.style.display='none'">
+            <div class="photo-overlay">
+              <i class="fa fa-heart"></i>
+            </div>
+          </a>
+        </div>
+      `;
+      gallery.appendChild(col);
+    }
+    
+    // Remove hidden items after load
+    setTimeout(() => {
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        if (item.querySelector('img').naturalWidth === 0) {
+          item.remove();
+        }
+      });
+      
+      const visibleCount = document.querySelectorAll('.gallery-item').length;
+      document.getElementById('photo-count').textContent = `${visibleCount} photos`;
+    }, 3000);
+    
+    document.getElementById('photo-count').textContent = `${count} photos`;
+    
+    // Download all
+    document.getElementById('download-all').addEventListener('click', async function() {
+      const btn = this;
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Preparing download...';
+      btn.disabled = true;
+      
+      const zip = new JSZip();
+      const folderZip = zip.folder(config.download.zipName);
+      
+      let downloaded = 0;
+      for (let i = 0; i < images.length; i++) {
+        try {
+          const response = await fetch(images[i]);
+          if (response.ok) {
+            const blob = await response.blob();
+            const ext = images[i].split('.').pop();
+            folderZip.file(`photo-${String(i + 1).padStart(3, '0')}.${ext}`, blob);
+            downloaded++;
+          }
+        } catch(e) {
+          console.log(`Could not download: ${images[i]}`);
+        }
+      }
+      
+      if (downloaded > 0) {
+        const content = await zip.generateAsync({ type: 'blob' });
+        saveAs(content, `${config.download.zipName}.zip`);
+        btn.innerHTML = '<i class="fa fa-check"></i> Download Complete!';
+      } else {
+        btn.innerHTML = '<i class="fa fa-exclamation-triangle"></i> No files found';
+      }
+      
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+      }, 3000);
+    });
+    
+    // View toggle
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const view = this.getAttribute('data-view');
+        const container = document.getElementById('wedding-gallery').parentElement;
+        container.className = view === 'grid' ? 'row gallery-grid' : 'row gallery-masonry';
+      });
+    });
+  }
+</script>
